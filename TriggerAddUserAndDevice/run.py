@@ -11,28 +11,11 @@ SET user_id = '{user_id}'
 WHERE email_address = '{email_address}';
 """
 
-UPDATE_DEVICE_QUERY = """
-WITH new_entry AS (
-    SELECT 
-        '{user_id}' as user_id,
-        '{device_id}' as device_id)
-MERGE INTO [dbo].[devices] AS TARGET
-USING new_entry AS SOURCE 
-ON (TARGET.device_id = source.device_id)
-WHEN matched THEN 
-    UPDATE SET TARGET.user_id = SOURCE.user_id
-WHEN NOT matched THEN
-      INSERT(user_id, 
-             device_id) 
-      VALUES (SOURCE.user_id, 
-              SOURCE.device_id);"""
-
 http = HTTPHelper()
 http_params = http.post
 print "HTTP Post parameters: {}".format(http_params)
 
 user_id = get_param_value(http_params, 'user_id', ptype=str, pmatch='^\d{13}x\d{18}$')
-device_id = get_param_value(http_params, 'device_id', ptype=str, pmatch='^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$')
 email_address = get_param_value(http_params, 'email_address', ptype=str, 
                                 pmatch='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
 
