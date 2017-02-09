@@ -3,8 +3,14 @@ import json
 import logging
 import pymssql  
 from datetime import datetime
-import ConfigParser
+try:
+    # Python 2
+    import ConfigParser
+except ImportError:
+    # Python 3: ConfigParser is renamed to configparser
+    import configparser as ConfigParser
 import os
+
 
 def read_config(file_path, items):
     """Read config file.
