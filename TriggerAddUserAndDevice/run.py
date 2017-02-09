@@ -20,8 +20,8 @@ email_address = get_param_value(http_params, 'email_address', ptype=str,
                                 pmatch='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
 
 config_path = os.path.abspath(os.path.join(os.getcwd(), '..', 'app.cfg'))
-config = read_config(config_path, ['alerts_db'])
-with get_connection(config['alerts_db']) as conn:
+config = read_config(config_path, ['2blockchain'])
+with get_connection(config['2blockchain']) as conn:
     user_rowcount = execute_sql(conn, UPDATE_USER_QUERY.format(user_id=user_id,
                                                                email_address=email_address))
     device_rowcount = execute_sql(conn, UPDATE_DEVICE_QUERY.format(user_id=user_id,
